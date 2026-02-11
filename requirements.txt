@@ -1,6 +1,6 @@
 fastapi
 uvicorn
-numpy
+numpy=2.3
 librosa
 soundfile
 tensorflow
