@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, UploadFile, File
 import shutil
 import os
@@ -7,6 +8,19 @@ from app.model_loader import load_models
 from app.inference import predict_score
 
 app = FastAPI(title="Audio Steganography Quality Predictor")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://audiostego.netlify.app",
+        "http://localhost:5173",
+        "http://localhost:3000"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 cnn_model, reg_model, scaler = load_models()
 
