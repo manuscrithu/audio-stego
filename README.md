@@ -14,24 +14,3 @@ using CNN-extracted audio features and a trained regression model.
 
 ### API Endpoint
 POST /predict
-
-### PostgreSQL Storage
-
-Prediction results are stored in PostgreSQL in table `"song-data"` with:
-- `id` (auto-generated, `BIGSERIAL` primary key)
-- `songName` (`TEXT`)
-- `score` (`DOUBLE PRECISION`)
-
-Create a `.env` file (you can copy from `.env.example`) and set either:
-- `DATABASE_URL` (recommended):
-	- `postgresql://postgres:<POSTGRES_PASSWORD>@centerbeam.proxy.rlwy.net:13454/railway`
-
-Or set individual variables:
-- `DB_HOST` (for Railway: `centerbeam.proxy.rlwy.net`)
-- `DB_PORT` (for Railway: `13454`)
-- `DB_NAME` (for Railway: `railway`)
-- `DB_USER` (for Railway: `postgres`)
-- `DB_PASSWORD`
-- `DB_SSLMODE` (recommended: `require`)
-
-Table creation is handled automatically on API startup.
