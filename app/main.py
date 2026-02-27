@@ -6,7 +6,6 @@ import uuid
 
 from app.model_loader import load_models
 from app.inference import predict_score
-from app.db import init_db, save_song_data
 
 app = FastAPI(title="Audio Steganography Quality Predictor")
 
@@ -28,11 +27,6 @@ cnn_model, reg_model, scaler = load_models()
 UPLOAD_DIR = "temp_uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-
-@app.on_event("startup")
-def startup_event():
-    init_db()
-
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     ext = file.filename.split(".")[-1].lower()
@@ -52,13 +46,10 @@ async def predict(file: UploadFile = File(...)):
             reg_model,
             scaler
         )
-        record_id = save_song_data(file.filename, round(score, 2))
     finally:
         os.remove(temp_path)
 
     return {
-        "id": record_id,
-        "songName": file.filename,
         "predicted_score": round(score, 2),
         "scale": "0–10",
         "interpretation": "Higher score indicates better steganography quality"

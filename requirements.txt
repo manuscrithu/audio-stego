@@ -7,5 +7,3 @@ tensorflow
 scikit-learn
 joblib
 python-multipart
-psycopg2-binary
-python-dotenv
