@@ -1,6 +1,9 @@
 import joblib
 import tensorflow as tf
 
+tf.keras.backend.clear_session()
+tf.config.set_visible_devices([], 'GPU')
+
 CNN_MODEL_PATH = "models/cnn_feature_extractor.keras"
 REG_MODEL_PATH = "models/nn_overall_score_model.keras"
 SCALER_PATH    = "models/scaler.pkl"
