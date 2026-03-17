@@ -22,7 +22,7 @@ app.add_middleware(
 )
 
 
-cnn_model, reg_model, scaler = load_models()
+cnn_model, reg_model, scaler,pca= load_models()
 
 UPLOAD_DIR = "temp_uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -44,7 +44,8 @@ async def predict(file: UploadFile = File(...)):
             temp_path,
             cnn_model,
             reg_model,
-            scaler
+            scaler,
+            pca
         )
     finally:
         os.remove(temp_path)
