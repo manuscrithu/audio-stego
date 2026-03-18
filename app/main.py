@@ -21,8 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-cnn_model, reg_model, scaler,pca= load_models()
+lstm_model, xgb_model, lgbm_model, scaler = load_models()
 
 UPLOAD_DIR = "temp_uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -40,13 +39,7 @@ async def predict(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
 
     try:
-        score = predict_score(
-            temp_path,
-            cnn_model,
-            reg_model,
-            scaler,
-            pca
-        )
+       score = predict_score(temp_path, lstm_model, xgb_model, lgbm_model, scaler)
     finally:
         os.remove(temp_path)
 
