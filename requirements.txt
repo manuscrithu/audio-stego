@@ -1,9 +1,15 @@
 fastapi
 uvicorn
-numpy==2.3
+python-multipart
+numpy
+pandas
+joblib
 librosa
 soundfile
-tensorflow
 scikit-learn
-joblib
-python-multipart
+xgboost
+lightgbm
+tensorflow-cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.1.0+cpu
+transformers==4.37.0
