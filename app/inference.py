@@ -1,32 +1,14 @@
 import numpy as np
 from app.audio_utils import preprocess_audio
-from app.feature_extractor import extract_cnn_features
+from app.feature_extractor import extract_features
 
-def predict_score(
-    file_path,
-    cnn_model,
-    reg_model,
-    scaler,
-    pca
-):
-    audio = preprocess_audio(file_path)
-    cnn_features = extract_cnn_features(audio, cnn_model)
+def predict_score(file_path, lstm_model, xgb_model, lgbm_model, scaler):
+    audio    = preprocess_audio(file_path)
+    features = extract_features(audio, lstm_model)  # (896,)
 
-    X = cnn_features.reshape(1, -1)
+    X_scaled    = scaler.transform(features.reshape(1, -1))
+    pred_xgb    = xgb_model.predict(X_scaled)[0]
+    pred_lgbm   = lgbm_model.predict(X_scaled)[0]
+    pred_blend  = 0.5 * pred_xgb + 0.5 * pred_lgbm
 
-    print("Before scaling:",X.shape)
-
-    X_scaled = scaler.transform(X)
-
-    # Apply PCA (256 to 140)
-    x_pca =pca.transform(X_scaled)
-    print("After pca:",x_pca.shape)
-
-    score = reg_model.predict(x_pca)[0][0]
-    print("Raw score:", score)
-
-    # Safety clamp
-    score=score/25
-    score = float(np.clip(score, 0.0, 10.0))
-
-    return score
+    return float(np.clip(pred_blend, 0.0, 10.0))
