@@ -1,15 +1,14 @@
 import joblib
 import tensorflow as tf
 
-CNN_MODEL_PATH = "models/cnn_feature_extractor"
-REG_MODEL_PATH = "models/nn_overall_score_model.keras"
-SCALER_PATH    = "models/scaler.pkl"
-PCA_PATH ="models/pca.pkl"
+LSTM_MODEL_PATH = "models/lstm_feature_extractor_v4b.keras"
+XGB_PATH        = "models/xgb_v4b.pkl"
+LGBM_PATH       = "models/lgbm_v4b.pkl"
+SCALER_PATH     = "models/scaler_v4b.pkl"
 
 def load_models():
-    cnn_model = tf.keras.models.load_model(CNN_MODEL_PATH)
-    reg_model = tf.keras.models.load_model(REG_MODEL_PATH)
-    scaler = joblib.load(SCALER_PATH)
-    pca= joblib.load(PCA_PATH)
-
-    return cnn_model, reg_model, scaler, pca
+    lstm_model = tf.keras.models.load_model(LSTM_MODEL_PATH)
+    xgb_model  = joblib.load(XGB_PATH)
+    lgbm_model = joblib.load(LGBM_PATH)
+    scaler     = joblib.load(SCALER_PATH)
+    return lstm_model, xgb_model, lgbm_model, scaler
