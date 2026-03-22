@@ -12,5 +12,10 @@ using CNN-extracted audio features and a trained regression model.
 6. Neural network regression
 7. Score prediction (0–10)
 
+### Run the application
+```bash
+uvicorn app.main:app --reload
+```
+
 ### API Endpoint
 POST /predict
