@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Install CPU-only torch first to avoid downloading GPU version
-RUN pip install --no-cache-dir torch==2.1.0+cpu \
+RUN pip install --no-cache-dir torch==2.10.0+cpu \
     --index-url https://download.pytorch.org/whl/cpu
 
 # Install rest of requirements

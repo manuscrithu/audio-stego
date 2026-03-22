@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 python-multipart
-numpy
+numpy<2
 pandas
 joblib
 librosa
@@ -9,5 +9,9 @@ soundfile
 scikit-learn
 xgboost
 lightgbm
-tensorflow-cpu
-transformers==4.37.0
+tensorflow-cpu==2.21.0
+keras==3.13.2
+transformers
+torch
+soxr==0.3.7
+huggingface_hub
