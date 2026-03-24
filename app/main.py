@@ -21,25 +21,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-cnn_model, reg_model, scaler,pca= load_models()
+lstm_model, xgb_model, lgbm_model, scaler = load_models()
 
 UPLOAD_DIR = "temp_uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
-
-
-def get_interpretation(score: float) -> str:
-    if score >= 8.5:
-        return "Excellent carrier - Highly recommended for steganography"
-    if score >= 8.0:
-        return "Very good carrier - Suitable for steganography"
-    if score >= 7.0:
-        return "Good carrier - Acceptable for most of the use cases; but not ideal for high-security applications"
-    if score >= 6.0:
-        return "Moderate carrier - Use with caution; may not be ideal for sensitive data"
-    if score >= 5.0:
-        return "Poor carrier - Not suitable for steganography"
-    return "Unsuitable - Avoid using this audio for steganography"
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
@@ -54,18 +39,18 @@ async def predict(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
 
     try:
-        score = predict_score(
-            temp_path,
-            cnn_model,
-            reg_model,
-            scaler,
-            pca
-        )
+        score, interpretation = predict_score(
+            temp_path, lstm_model, xgb_model, lgbm_model, scaler)
     finally:
         os.remove(temp_path)
 
     return {
-        "predicted_score": round(score, 2),
-        "scale": "0–10",
-        "interpretation": get_interpretation(score)
+        "predicted_score":            round(score, 2),
+        "scale":                      "0–10",
+        "grade":                      interpretation["grade"],
+        "steganography_suitability":  interpretation["steganography_suitability"],
+        "description":                interpretation["description"],
+        "detectability_risk":         interpretation["detectability_risk"],
+        "perceptual_distortion":      interpretation["perceptual_distortion"],
+        "interpretation":             "Higher score indicates better steganography quality"
     }

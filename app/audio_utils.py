@@ -1,9 +1,9 @@
 import librosa
 import numpy as np
 
-SR = 16000
-DURATION = 4  # seconds
-TARGET_LEN = SR * DURATION
+SR         = 16000
+DURATION   = 4
+TARGET_LEN = SR * DURATION  # 64000 samples
 
 def preprocess_audio(file_path):
     audio, _ = librosa.load(file_path, sr=SR, mono=True)
